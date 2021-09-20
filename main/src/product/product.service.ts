@@ -18,8 +18,22 @@ export class ProductService {
     return this.productRepository.save(data);
   }
 
-  async get(id: number): Promise<Product> {
-    return this.productRepository.findOne({ id });
+  async getAllByUser(uid: string): Promise<any> {
+    // console.log(uid)
+    // console.log(`---uid--`)
+    try{
+      let res = await getConnection().getRepository(Product).createQueryBuilder()
+          .where("created_by = :uid", { uid: uid })
+          .getRawMany()
+
+      console.log(res)
+
+      return res
+    }catch (e) {
+      return 'data not found'
+    }
+    // return this.productRepository.findOne({ created_at : uid });
+
   }
 
   async update(id: number, data): Promise<any> {

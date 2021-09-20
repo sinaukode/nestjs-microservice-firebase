@@ -41,4 +41,19 @@ export class ProductController {
     })
   }
 
+
+  @Get()
+  @Roles('admin')
+  async getAllProduct(@Req() req ,@Res() res: Response): Promise<any> {
+    console.log(`get all product`)
+    let uid = req.user.uid
+    console.log(uid)
+    let data =  await this.productService.sendMessageService('all-product',uid);
+    console.log(data)
+    res.json({
+      status : 'ok',
+      data : data
+    })
+  }
+
 }

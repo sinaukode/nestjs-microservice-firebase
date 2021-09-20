@@ -38,6 +38,26 @@ export class ProductController {
   }
 
 
+  @RabbitRPC({
+    exchange: 'serviceOne',
+    routingKey: 'all-product'
+  })
+  public async getAllProduct(payload: any, context: any) {
+
+    let uid = payload.payload
+    console.log('masok all product')
+
+    let result = await this.productService.getAllByUser(uid);
+
+    return {
+      status : 'ok',
+      message: result,
+    };
+  }
+
+
+
+
   @RabbitSubscribe({
     exchange: 'serviceOne',
     routingKey: 'delete-product'
