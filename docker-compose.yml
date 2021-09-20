@@ -1,0 +1,33 @@
+version: "3"
+services:
+  web:
+    build: ./gateway
+    ports:
+      - 8000:8000
+  order:
+    build: ./main
+    ports:
+      # - 8876:8876
+      - 8877:8877
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      - RABBITMQ_USERNAME=rabbitmq
+      - RABBITMQ_PASSWORD=123456
+  mysql-db:
+    image: mysql:5.7
+    container_name: mysql_container
+    environment:
+      MYSQL_HOST: localhost
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+    volumes:
+      - ./db/sample.sql:/docker-entrypoint-initdb.d/sample.sql
+
+
